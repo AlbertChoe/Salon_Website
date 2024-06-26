@@ -1,10 +1,8 @@
-import { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../../../lib/prisma';
 import bcrypt from 'bcryptjs';
-
-const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -22,7 +20,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (user && await bcrypt.compare(credentials.password, user.password)) {
-          return { id: user.id, email: user.email };
+          return { id: user.id, email: user.email, role: user.role };
         }
 
         return null;
@@ -37,17 +35,18 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (token?.id) {
         session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
   },
-  pages: {
-    signIn: '/login',  // Redirect to custom login page
-  },
 };
+
+export default authOptions;

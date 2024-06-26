@@ -5,12 +5,14 @@ declare module "next-auth" {
   interface User {
     id: string;
     email: string;
+    role: string; // Add custom role field here
   }
 
-  interface Session extends DefaultSession {
+  interface Session {
     user: {
       id: string;
       email: string;
+      role: string; // Add custom role field here
     }
   }
 

@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const paths = [
-  { name: "Book Appointment", url: "/book-appointment" },
+  { name: "Book Appointment", url: "/reservation" },
 ];
 
 function Navbar() {

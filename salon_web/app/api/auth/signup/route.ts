@@ -1,35 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
-    const { email, password } = req.body;
+export async function POST(req: Request) {
+  try {
+    const { fullName, email, phone, password } = await req.json();
 
     const userExists = await prisma.user.findUnique({
       where: { email }
     });
 
     if (userExists) {
-      res.status(400).json({ message: 'User already exists' });
-      return;
+      return NextResponse.json({ message: 'User already exists' }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
+        fullName,
         email,
+        phone,
         password: hashedPassword,
+        role: "Customer",
       },
     });
 
-    res.status(201).json(user);
-  } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    return NextResponse.json(user, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
-};
-
-export { handler as POST };
+}

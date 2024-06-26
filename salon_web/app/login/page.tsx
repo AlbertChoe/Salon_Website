@@ -2,14 +2,13 @@ import LogInForm from "./login-form";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'; 
+import  authOptions  from '@/app/api/auth/[...nextauth]/authOptions'; 
 import Link from "next/link";
 
 const LogInPage = async () => {
-  // Fetch the session
+
   const session = await getServerSession(authOptions);
 
-  // Redirect if already logged in
   if (session) {
     redirect("/");
   }
