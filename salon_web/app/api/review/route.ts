@@ -1,38 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
+import { NextRequest, NextResponse } from 'next/server';
 import authOptions from '../../api/auth/[...nextauth]/authOptions';
 import prisma from '../../../lib/prisma';
 
-
-
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(request: Request, res: NextResponse) {
     try {
-        console.log(1);
-        const session = await getServerSession(req, res, authOptions);
-        console.log(2);
+        const formData = await request.json();
+        const { name, rating, comment } = formData;
+        const session = await getServerSession(authOptions);
         if (!session || session.user.role !== 'Customer') {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return NextResponse.rewrite(new URL('/unauthorized', request.url));
         }
-        console.log(3);
 
-        const { name, rating, comment } = req.body;
         if (!name || !rating || !comment) {
-            return res.status(400).json({ error: 'All fields are required' });
+            return new NextResponse(JSON.stringify({ error: 'All fields are required' }), { status: 400 });
         }
 
-        console.log(4);
         const review = await prisma.review.create({
             data: {
                 name,
                 rating,
                 comment,
-                userId: session.user.id, // Assuming userId is a foreign key in the review table
+                userId: session.user.id,
             },
         });
 
-        return res.status(201).json(review);
+        return new NextResponse(JSON.stringify(review), { status: 201 });
     } catch (error) {
         console.error('Error in POST /api/review:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
 }
