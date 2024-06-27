@@ -71,10 +71,7 @@ function Navbar() {
             {session ? (
               <>
                 <Link href="/dashboard/settings" className="hover:text-yellow-500">
-                  Settings
-                </Link>
-                <Link href="/dashboard/inbox" className="hover:text-yellow-500">
-                  Inbox
+                  Dashboard
                 </Link>
                 <button onClick={() => signOut()} className="hover:text-yellow-500">
                   Log Out
