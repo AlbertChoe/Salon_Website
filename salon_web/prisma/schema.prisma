@@ -14,7 +14,7 @@ model User {
   phone    String
   password String
   role     String
-  Review   Review[]
+  reviews  Review[]
 }
 
 model Reservation {
@@ -22,8 +22,11 @@ model Reservation {
   name     String
   phone    String
   service  String
-  dateTime DateTime
+  date     String
+  time     String
+  @@index([date, time])
 }
+
 
 model Review {
   id      String @id @default(uuid())
@@ -32,4 +35,18 @@ model Review {
   comment String
   userId  String
   user    User   @relation(fields: [userId], references: [id])
+}
+
+model Service {
+  id       String   @id @default(uuid())
+  name     String
+  duration Int      // Duration in minutes
+}
+
+model TimeSlot {
+  id        String   @id @default(uuid())
+  startTime DateTime
+  endTime   DateTime
+  isBooked  Boolean
+  @@index([startTime, endTime]) // Index these fields if querying frequently
 }
