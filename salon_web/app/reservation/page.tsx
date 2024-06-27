@@ -8,7 +8,7 @@ const ReservationForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [service, setService] = useState("Haircuts and styling");
-  const [date, setDate] = useState(new Date()); 
+  const [date, setDate] = useState<Date | null>(new Date());
   const [time, setTime] = useState("8:00");
   const router = useRouter();
 
