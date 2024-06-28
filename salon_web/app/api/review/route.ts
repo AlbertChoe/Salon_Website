@@ -32,3 +32,25 @@ export async function POST(request: Request, res: NextResponse) {
         return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
 }
+
+export async function GET(request: Request) {
+    try {
+        const reviews = await prisma.review.findMany({
+            take: 5,
+            orderBy: {
+                createdAt: 'desc',
+            },
+            select: {
+                name: true,
+                rating: true,
+                comment: true,
+
+            },
+        });
+
+        return new NextResponse(JSON.stringify({ reviews }), { status: 200 });
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+    }
+}

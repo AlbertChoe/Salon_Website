@@ -31,12 +31,13 @@ model Reservation {
 }
 
 model Review {
-  id      String @id @default(uuid())
-  name    String
-  rating  Int
-  comment String
-  userId  String
-  user    User   @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  name      String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Service {

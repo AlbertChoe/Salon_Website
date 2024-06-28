@@ -1,48 +1,75 @@
-
+"use client"
 import Services from '../service';
 import ReviewForm from '../reviewForm';
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselApi
+} from "@/components/ui/carousel";
+import { useEffect, useState, useCallback, useRef } from 'react';
 
-import Image from 'next/image';
-const testimonials = [
-  {
-    name: "Jane Doe",
-    rating: 5,
-    comment: "SEA Salon offers the best haircut experience! The staff is friendly and professional. Highly recommend!",
-    image: "/images/testimonial1.jpg", // Replace with the actual path
-  },
-  {
-    name: "John Smith",
-    rating: 5,
-    comment: "I had an amazing manicure and pedicure session. The atmosphere is so relaxing, and the service is top-notch!",
-    image: "/images/testimonial2.jpg", // Replace with the actual path
-  },
-  {
-    name: "Emily Johnson",
-    rating: 5,
-    comment: "The facial treatments at SEA Salon are fantastic. My skin feels rejuvenated and glowing. Will definitely come back!",
-    image: "/images/testimonial3.jpg", // Replace with the actual path
-  },
-];
+interface Testimonial {
+  name: string;
+  rating: number;
+  comment: string;
+}
 
-const Home = () => {
+const Home: React.FC = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      const response = await fetch('/api/review');
+      if (response.ok) {
+        const data = await response.json();
+        setTestimonials(data.reviews);
+      }
+    }
+
+    fetchTestimonials();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (carouselApi) {
+        carouselApi.scrollNext();
+      }
+    }, 3000); 
+
+    return () => clearInterval(intervalId);
+  }, [carouselApi]);
+
   return (
     <div>
       <Services />
-      {/* <section className="my-8">
+      <section className="my-8">
         <h2 className="text-3xl font-bold text-center mb-6">Customer Testimonials</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-              <Image src={testimonial.image} alt={testimonial.name} width={100} height={100} className="rounded-full mx-auto" />
-              <h3 className="text-xl font-semibold mt-4 text-center">{testimonial.name}</h3>
-              <p className="text-center mt-2">Rating: {testimonial.rating} Stars</p>
-              <p className="mt-4">{testimonial.comment}</p>
-            </div>
-          ))}
-        </div>
-      </section> */}
+        <Carousel className="w-full max-w-2xl mx-auto mb-20" setApi={setCarouselApi}>
+          <CarouselContent>
+            {testimonials.map((testimonial, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <Card className="shadow-lg">
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold text-center">{testimonial.name}</h3>
+                      <p className="text-center text-yellow-500 mt-2">Rating: {testimonial.rating} Stars</p>
+                      <p className="mt-4 text-center text-gray-700">{testimonial.comment}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </section>
       <ReviewForm />
-
     </div>
   );
 };
