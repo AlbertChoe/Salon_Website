@@ -3,19 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DatePickerDemo } from "@/components/ui/date-picker";
+import { useSession } from "next-auth/react";
 
 const ReservationForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [service, setService] = useState("Haircuts and styling");
   const [date, setDate] = useState<Date | null>(new Date());
-  const [time, setTime] = useState("8:00");
+  const [time, setTime] = useState("9:00");
   const router = useRouter();
+  const { data: session } = useSession(); // Using useSession to check if the user is logged in
+
 
   // Generate time slots dynamically from 8 AM to 9 PM
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = 8; hour <= 21; hour++) {
+    for (let hour = 9; hour <= 21; hour++) {
       slots.push(`${hour}:00`);
     }
     return slots;
@@ -25,6 +28,10 @@ const ReservationForm = () => {
     e.preventDefault();
     if (!date) {
       alert('Fill all the data');
+      return;
+    }
+    if (!session) {
+      alert('Reservations can only be made by members. Please log in first.');
       return;
     }
     // Formatting date to send only the date part
@@ -44,6 +51,7 @@ const ReservationForm = () => {
       setTime("");
       router.push('/'); // Change to a confirmation page or refresh
     } else {
+      alert('Failed to submit reservation');
       console.error('Failed to submit reservation');
     }
   };

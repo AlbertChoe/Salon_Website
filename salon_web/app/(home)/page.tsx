@@ -1,6 +1,6 @@
 
-import Services from './service';
-import ReviewForm from './reviewForm';
+import Services from '../service';
+import ReviewForm from '../reviewForm';
 
 import Image from 'next/image';
 const testimonials = [

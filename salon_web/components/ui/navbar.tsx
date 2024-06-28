@@ -16,10 +16,13 @@ function Navbar() {
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
   const currentPath = usePathname();
   const { data: session } = useSession();
+  // Determine dashboard path based on user role
+  const dashboardPath = session?.user?.role === 'Admin' ? "/dashboard/adminDashboard" : "/dashboard/customerDashboard";
+  console.log("Session found di fe:", session);
 
   return (
     <header className="sticky top-0 z-50 bg-blue-600 text-white">
-      <div className=" mx-auto px-4 flex justify-between items-center h-16">
+      <div className="mx-auto px-4 flex justify-between items-center h-16">
         <Link href="/" className="flex items-center space-x-2">
           <Image src="/navbar/salonIcon.webp" alt="Logo" width={24} height={24} />
           <span className="font-bold text-3xl">SEA Salon</span>
@@ -32,12 +35,10 @@ function Navbar() {
           ))}
           {session ? (
             <>
-              <Link href="/dashboard/settings" className="hover:text-yellow-500">
-                Settings
+              <Link href={dashboardPath} className="hover:text-yellow-500">
+                Dashboard
               </Link>
-              <Link href="/dashboard/inbox" className="hover:text-yellow-500">
-                Inbox
-              </Link>
+            
               <button onClick={() => signOut()} className="hover:text-yellow-500">
                 Log Out
               </button>
@@ -70,7 +71,7 @@ function Navbar() {
             ))}
             {session ? (
               <>
-                <Link href="/dashboard/settings" className="hover:text-yellow-500">
+                <Link href={dashboardPath} className="hover:text-yellow-500">
                   Dashboard
                 </Link>
                 <button onClick={() => signOut()} className="hover:text-yellow-500">
