@@ -18,7 +18,6 @@ function Navbar() {
   const { data: session } = useSession();
   // Determine dashboard path based on user role
   const dashboardPath = session?.user?.role === 'Admin' ? "/dashboard/adminDashboard" : "/dashboard/customerDashboard";
-  console.log("Session found di fe:", session);
 
   return (
     <header className="sticky top-0 z-50 bg-blue-600 text-white">
