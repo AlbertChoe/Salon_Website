@@ -8,13 +8,13 @@ generator client {
 }
 
 model User {
-  id         String         @id @default(uuid())
-  fullName   String
-  email      String         @unique
-  phone      String
-  password   String
-  role       String
-  reviews    Review[]
+  id           String         @id @default(uuid())
+  fullName     String
+  email        String         @unique
+  phone        String
+  password     String
+  role         String
+  reviews      Review[]
   reservations Reservation[] 
 }
 
@@ -30,8 +30,6 @@ model Reservation {
   @@index([date, time])
 }
 
-
-
 model Review {
   id      String @id @default(uuid())
   name    String
@@ -45,12 +43,13 @@ model Service {
   id       String   @id @default(uuid())
   name     String
   duration Int      // Duration in minutes
+  price    String      // Price in currency units
 }
 
 model TimeSlot {
   id        String   @id @default(uuid())
-  startTime DateTime
-  endTime   DateTime
-  isBooked  Boolean
-  @@index([startTime, endTime]) // Index these fields if querying frequently
+  date      String   
+  startTime String   // Time slot start time
+  endTime   String   // Time slot end time
+  @@index([date, startTime, endTime])
 }

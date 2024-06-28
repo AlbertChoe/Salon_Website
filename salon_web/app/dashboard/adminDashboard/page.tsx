@@ -6,13 +6,14 @@ import React, { useEffect, useState } from 'react';
 const AdminDashboard = () => {
     const [serviceName, setServiceName] = useState('');
     const [duration, setDuration] = useState('');
+    const [price, setPrice] = useState('');
     const { data: session, status } = useSession();
     const router = useRouter();
+
     useEffect(() => {
         if (status === 'authenticated' && session?.user?.role !== 'Admin') {
             router.replace('/');
             return;
-
         }
     }, [status, session, router]);
 
@@ -28,18 +29,18 @@ const AdminDashboard = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: serviceName, duration: parseInt(duration, 10) }),
+            body: JSON.stringify({ name: serviceName, duration: parseInt(duration, 10), price }),
         });
 
         if (response.ok) {
             alert('Service added successfully!');
             setServiceName('');
             setDuration('');
+            setPrice('');
         } else {
             alert('Failed to add service');
         }
     };
-
 
     return (
         <div className="h-screen max-w-md mx-auto mt-10">
@@ -69,6 +70,20 @@ const AdminDashboard = () => {
                         value={duration}
                         onChange={(e) => setDuration(e.target.value)}
                         placeholder="Duration (minutes)"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required
+                    />
+                </div>
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="price">
+                        Price
+                    </label>
+                    <input
+                        id="price"
+                        type="text"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        placeholder="Price"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
