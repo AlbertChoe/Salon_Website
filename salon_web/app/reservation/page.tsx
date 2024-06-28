@@ -114,11 +114,11 @@ const ReservationForm = () => {
       }
       const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
       const formattedDate = localDate.toISOString().split('T')[0];
-      console.log(name, phone, selectedService?.id, selectedService?.duration, formattedDate, time);
+
       const response = await fetch('/api/reservation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, service: selectedService?.id, duration: selectedService?.duration, date: formattedDate, time }),
+          body: JSON.stringify({ name, phone, service: selectedService?.name, duration: selectedService?.duration, date: formattedDate, time }),
       });
 
       if (response.ok) {
