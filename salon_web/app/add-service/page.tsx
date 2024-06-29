@@ -19,6 +19,7 @@ const AdminDashboard = () => {
     const [duration, setDuration] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState<File | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (status === 'authenticated' && session?.user?.role !== 'Admin') {
@@ -46,14 +47,11 @@ const AdminDashboard = () => {
 
     const uploadImage = async () => {
         if (!image) return '';
-    
-        console.log("Cloud Name:", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
-        console.log("Upload Preset:", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
-    
+
         const formData = new FormData();
         formData.append('file', image);
         formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-    
+
         try {
             const response = await axios.post(
                 `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -65,13 +63,14 @@ const AdminDashboard = () => {
             return '';
         }
     };
-    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
         if (!selectedBranch) {
             alert('Please select a branch.');
+            setIsSubmitting(false);
             return;
         }
 
@@ -97,9 +96,12 @@ const AdminDashboard = () => {
             setDuration('');
             setPrice('');
             setImage(null);
+            setSelectedBranch(null);
         } else {
             alert('Failed to add service');
         }
+        
+        setIsSubmitting(false);
     };
 
     if (status !== 'loading' && (!session || session.user.role !== 'Admin')) {
@@ -116,6 +118,7 @@ const AdminDashboard = () => {
                 </label>
                 <select
                     id="branch"
+                    value={selectedBranch?.id || ""}
                     onChange={(e) => handleBranchSelect(e.target.value)}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     required
@@ -184,8 +187,8 @@ const AdminDashboard = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            Add Service
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" disabled={isSubmitting}>
+                            {isSubmitting ? 'Adding...' : 'Add Service'}
                         </button>
                     </div>
                 </form>

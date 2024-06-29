@@ -19,7 +19,7 @@ const customerPaths = [
 
 const adminPaths = [
   { name: "Add Service", url: "/add-service" },
-  { name: "Add Branch", url: "/add-branch" },
+  { name: "Add Branch", url: "/branch/add-branch" },
 ];
 
 function Navbar() {
