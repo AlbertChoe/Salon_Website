@@ -69,7 +69,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       const bookedSlots = await prisma.timeSlot.findMany({
           where: { date, branchId },
           select: { startTime: true, endTime: true },
-          orderBy: { startTime: 'asc' } // Order by start time ascending
+          orderBy: { startTime: 'asc' } //
       });
 
       return new NextResponse(JSON.stringify({ bookedSlots }), { status: 200 });

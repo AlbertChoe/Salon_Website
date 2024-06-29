@@ -42,8 +42,12 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
     }
 
     try {
-
-        const { searchParams } = new URL(req.url || '', `http://${req.headers.host}`);
+        const host = req.headers.get('host'); 
+        if (!host) {
+            console.error('Host header is missing');
+            return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+        }
+        const { searchParams } = new URL(req.url || '', `http://${host}`);
         const branchId = searchParams.get('branchId');
         if (!branchId) {
             return new NextResponse(JSON.stringify({ error: 'BranchID is required' }), { status: 400 });

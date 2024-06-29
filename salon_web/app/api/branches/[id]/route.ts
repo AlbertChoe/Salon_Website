@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 
 export async function GET(req: NextRequest) {
-    const host = req.headers.get('host'); // Correctly accessing the host header
+    const host = req.headers.get('host'); 
     if (!host) {
         console.error('Host header is missing');
         return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
     const url = new URL(req.nextUrl.pathname, `http://${host}`);
-    const id = url.pathname.split('/').pop();  // Assuming 'id' is the last segment of the pathname
+    const id = url.pathname.split('/').pop(); 
 
     if (typeof id !== 'string') {
         console.error('Invalid ID:', id);
