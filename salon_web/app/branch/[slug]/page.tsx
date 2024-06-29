@@ -1,5 +1,4 @@
 "use client"
-// Assuming this is within pages/branch/[slug].tsx or a similar client-side component
 
 import { useEffect, useState } from 'react';
 
@@ -83,7 +82,7 @@ export default function Page({ params }: PageProps) {
                 <div style={{ backgroundImage: `url(${service.imageUrl})`, backgroundSize: 'cover', height: '200px' }}></div>
               )}
               <h3 className="text-xl font-semibold">{service.name}</h3>
-              <p className="text-yellow-500 mt-2">${service.price}</p>
+              <p className="text-yellow-500 mt-2">IDR {service.price}</p>
               <p className="mt-2 text-gray-700">{service.duration} minutes</p>
             </div>
           ))

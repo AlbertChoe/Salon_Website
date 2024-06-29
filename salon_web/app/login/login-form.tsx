@@ -36,23 +36,21 @@ const LogInForm = () => {
   } = methods;
 
   const onSubmit = async (values: FormData) => {
-    // Initiate loading toast
+
     const loadingToast = toast.loading("Loading...", {
       description: "Logging in...",
       duration: Infinity,
     });
 
-    // Send request
+ 
     const res = await signIn("credentials", {
       email: values.email,
       password: values.password,
       redirect: false,
     });
 
-    // Remove loading toast
     toast.dismiss(loadingToast);
 
-    // Response undefined
     if (!res) {
       toast.error("Error", {
         description: "Please try again later.",
@@ -60,7 +58,6 @@ const LogInForm = () => {
       return;
     }
 
-    // Error response
     if (!res.ok) {
       toast.error("Error", { description: "Incorrect email or password" });
 
@@ -71,14 +68,10 @@ const LogInForm = () => {
       return;
     }
 
-    // Success response
-    // Show success toast
     toast.success("Success", { description: "Welcome to Sea Salon!" });
 
-    // Redirect to home
     router.replace("/");
 
-    // Refresh router
     router.refresh();
   };
 

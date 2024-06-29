@@ -212,7 +212,7 @@ const ReservationForm = () => {
                             }} className="w-full border border-gray-300 p-2 rounded-lg" required>
                                 {services && services.map(service => (
                                     <option key={service.id} value={service.id}>
-                                        {service.name} - ${service.price} for {service.duration} minutes
+                                        {service.name} - IDR {service.price} for {service.duration} minutes
                                     </option>
                                 ))}
                             </select>

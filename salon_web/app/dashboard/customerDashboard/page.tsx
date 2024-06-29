@@ -32,7 +32,6 @@ const CustomerDashboard = () => {
             }
         }
 
-        // Redirect if not authenticated or not a customer
         if (status !== 'loading' && (!session || session.user.role !== 'Customer')) {
             router.replace('/');
             return;

@@ -23,7 +23,6 @@ const SignupForm: React.FC = () => {
       if (response.ok) {
         router.push('/login');
       } else {
-        // Handle server errors here
         const errorData = await response.json();
         console.error('Failed to sign up:', errorData.message);
       }

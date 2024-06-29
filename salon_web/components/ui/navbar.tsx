@@ -27,7 +27,6 @@ function Navbar() {
   const currentPath = usePathname();
   const { data: session } = useSession();
   
-  // Determine paths based on user role
   const rolePaths = session?.user?.role === 'Admin' ? adminPaths : customerPaths;
   const paths = session ? [...rolePaths, ...commonPaths] : commonPaths;
 
