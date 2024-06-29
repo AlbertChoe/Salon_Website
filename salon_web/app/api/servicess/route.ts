@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 }
 
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextApiResponse) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });

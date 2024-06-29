@@ -56,7 +56,7 @@ export async function POST(req: Request, res: NextResponse) {
   }
 }
 
-export async function GET(req: NextRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
   const date = searchParams.get('date');
   const branchId = searchParams.get('branchId');

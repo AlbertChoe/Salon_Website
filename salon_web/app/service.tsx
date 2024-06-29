@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 const services = [
   {
     title: "Haircuts and Styling",
