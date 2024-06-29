@@ -13,9 +13,9 @@ model User {
   email        String         @unique
   phone        String
   password     String
-  role         String
+  role         Role
   reviews      Review[]
-  reservations Reservation[] 
+  reservations Reservation[]
 }
 
 model Reservation {
@@ -25,9 +25,11 @@ model Reservation {
   service  String
   date     String
   time     String
-  userId   String   
+  userId   String
   user     User     @relation(fields: [userId], references: [id])
-  @@index([date, time])
+  branchId String
+  branch   Branch   @relation(fields: [branchId], references: [id])
+  @@index([userId])
 }
 
 model Review {
@@ -35,7 +37,7 @@ model Review {
   name      String
   rating    Int
   comment   String
-  createdAt DateTime @default(now())  
+  createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
@@ -44,13 +46,37 @@ model Service {
   id       String   @id @default(uuid())
   name     String
   duration Int      // Duration in minutes
-  price    String      // Price in currency units
+  price    String   // Price in currency units
+  imageUrl String?
+  branchId String
+  branch   Branch   @relation(fields: [branchId], references: [id])
+  @@index([branchId])
 }
 
 model TimeSlot {
   id        String   @id @default(uuid())
-  date      String   
+  date      String
   startTime String   // Time slot start time
   endTime   String   // Time slot end time
-  @@index([date, startTime, endTime])
+  branchId  String
+  branch    Branch   @relation(fields: [branchId], references: [id])
+  @@index([branchId, date])
+}
+
+model Branch {
+  id          String     @id @default(uuid())
+  name        String
+  location    String
+  phone       String 
+  openingTime String
+  closingTime String
+  services    Service[]
+  reservations Reservation[]
+  timeSlots   TimeSlot[]
+}
+
+
+enum Role {
+  Admin
+  Customer
 }

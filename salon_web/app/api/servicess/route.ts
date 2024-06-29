@@ -1,18 +1,18 @@
-
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { NextResponse } from 'next/server';
 import authOptions from '../auth/[...nextauth]/authOptions';
 import prisma from '../../../lib/prisma';
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
     try {
-        const { name, duration, price } = await req.json();
+        const { name, duration, price, branchId, imageUrl } = await req.json();
         const session = await getServerSession(authOptions);
+        
         if (!session || session.user.role !== 'Admin') {
-            return NextResponse.redirect(new URL('/unauthorized', req.url));
+            return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
         }
 
-        if (!name || !duration || !price) {
+        if (!name || !duration || !price || !branchId || !imageUrl) {
             return new NextResponse(JSON.stringify({ error: 'All fields are required' }), { status: 400 });
         }
 
@@ -21,6 +21,8 @@ export async function POST(req: Request, res: NextResponse) {
                 name,
                 duration: parseInt(duration, 10),
                 price,
+                imageUrl,
+                branchId,
             },
         });
 
@@ -30,7 +32,6 @@ export async function POST(req: Request, res: NextResponse) {
         return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
 }
-
 export async function GET(req: Request, res: NextResponse) {
     const session = await getServerSession(authOptions);
     if (!session) {

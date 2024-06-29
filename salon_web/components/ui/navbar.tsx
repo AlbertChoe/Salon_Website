@@ -8,19 +8,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-const paths = [
+const commonPaths = [
+  { name: "Branch", url: "/branch" },
+];
+
+const customerPaths = [
   { name: "Book Appointment", url: "/reservation" },
+  { name: "Dashboard", url: "/dashboard/customerDashboard" },
+];
+
+const adminPaths = [
+  { name: "Add Service", url: "/add-service" },
+  { name: "Add Branch", url: "/add-branch" },
 ];
 
 function Navbar() {
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
   const currentPath = usePathname();
   const { data: session } = useSession();
-  // Determine dashboard path based on user role
-  const dashboardPath = session?.user?.role === 'Admin' ? "/dashboard/adminDashboard" : "/dashboard/customerDashboard";
+  
+  // Determine paths based on user role
+  const rolePaths = session?.user?.role === 'Admin' ? adminPaths : customerPaths;
+  const paths = session ? [...rolePaths, ...commonPaths] : commonPaths;
 
   return (
-    <header className="sticky top-0 z-50 bg-blue-600 text-white">
+    <header className="sticky top-0 z-50 bg-blue-600 text-white p-2">
       <div className="mx-auto px-4 flex justify-between items-center h-16">
         <Link href="/" className="flex items-center space-x-2">
           <Image src="/navbar/salonIcon.webp" alt="Logo" width={24} height={24} />
@@ -34,13 +46,13 @@ function Navbar() {
           ))}
           {session ? (
             <>
-              <Link href={dashboardPath} className="hover:text-yellow-500">
-                Dashboard
-              </Link>
-            
               <button onClick={() => signOut()} className="hover:text-yellow-500">
                 Log Out
               </button>
+              <div className="flex flex-col text-right border border-gray-300 p-2 rounded-md bg-blue-400">
+                <span className="font-semibold">{session.user.email}</span>
+                <span className="text-sm text-blue-200">{session.user.role}</span>
+              </div>
             </>
           ) : (
             <>
@@ -70,12 +82,13 @@ function Navbar() {
             ))}
             {session ? (
               <>
-                <Link href={dashboardPath} className="hover:text-yellow-500">
-                  Dashboard
-                </Link>
                 <button onClick={() => signOut()} className="hover:text-yellow-500">
                   Log Out
                 </button>
+                <div className="flex flex-col items-center border border-gray-300 p-2 rounded-md bg-gray-800">
+                  <span className="font-semibold">{session.user.email}</span>
+                  <span className="text-sm text-gray-200">{session.user.role}</span>
+                </div>
               </>
             ) : (
               <>
