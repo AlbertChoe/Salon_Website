@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import { toast } from 'sonner';
 
 const SignupForm: React.FC = () => {
   const [fullName, setFullName] = useState('');
@@ -13,6 +14,10 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Show a loading toast
+    const loadingToast = toast.loading("Creating your account...");
+
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -20,20 +25,25 @@ const SignupForm: React.FC = () => {
         body: JSON.stringify({ fullName, email, phone, password }),
       });
 
+      // Dismiss the loading toast
+      toast.dismiss(loadingToast);
+
       if (response.ok) {
+        toast.success("Registration successful!", { description: "Please log in to continue." });
         router.push('/login');
       } else {
         const errorData = await response.json();
-        console.error('Failed to sign up:', errorData.message);
+        toast.error("Failed to sign up", { description: errorData.message });
       }
     } catch (error) {
+      toast.error("An error occurred during sign up", { description: "Please try again later." });
       console.error('An error occurred during sign up:', error);
     }
   };
 
   return (
     <div className="flex h-screen items-center justify-center bg-gradient-to-r from-blue-400 to-indigo-600">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md w-full mx-auto p-8 bg-white rounded-lg shadow-lg">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md w-full mx-auto p-8 bg-white rounded-lg shadow-lg relative">
         <div className="absolute -top-20 flex w-full items-center justify-center">
           <Image src="/navbar/salonIcon.webp" alt="Logo" width={60} height={60} />
         </div>
@@ -73,6 +83,9 @@ const SignupForm: React.FC = () => {
         <button type="submit" className="mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
           Sign Up
         </button>
+        <p className="mt-4 text-center">
+          Already have an account? <a href="/login" className="text-blue-700 hover:underline">Log in</a>
+        </p>
       </form>
     </div>
   );

@@ -84,7 +84,7 @@ function Navbar() {
                 <button onClick={() => signOut()} className="hover:text-yellow-500">
                   Log Out
                 </button>
-                <div className="flex flex-col items-center border border-gray-300 p-2 rounded-md bg-gray-800">
+                <div className="flex flex-col items-center border border-gray-300 p-2 rounded-md bg-blue-400">
                   <span className="font-semibold">{session.user.email}</span>
                   <span className="text-sm text-gray-200">{session.user.role}</span>
                 </div>

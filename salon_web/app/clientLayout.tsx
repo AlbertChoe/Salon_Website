@@ -7,11 +7,11 @@ import { Toaster, toast } from 'sonner'
 const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <SessionProvider>
-      <Toaster  position="bottom-right" richColors  />
       <Navbar />
 
       {children}
       <Footer />
+      <Toaster  position="bottom-right" richColors  />
     </SessionProvider>
   );
 };

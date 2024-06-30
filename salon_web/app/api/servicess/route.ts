@@ -56,7 +56,6 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
         const services = await prisma.service.findMany({
             where: { branchId },
         });
-        console.log(services);
         return new NextResponse(JSON.stringify(services), { status: 200 })
     } catch (error) {
         console.error('Error in GET /api/servicess:', error);

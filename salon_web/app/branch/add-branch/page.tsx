@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const AddBranchPage = () => {
     const { data: session } = useSession();
@@ -12,6 +13,7 @@ const AddBranchPage = () => {
     const [phone, setPhone] = useState('');
     const [openingTime, setOpeningTime] = useState('');
     const [closingTime, setClosingTime] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const formatTime = (time: string) => {
         const [hours, minutes] = time.split(':');
@@ -22,10 +24,11 @@ const AddBranchPage = () => {
         e.preventDefault();
 
         if (!name || !location || !phone || !openingTime || !closingTime) {
-            alert('Please fill in all fields.');
+            toast.error("Please fill in all fields.");
             return;
         }
 
+        setIsSubmitting(true);
         const formattedOpeningTime = formatTime(openingTime);
         const formattedClosingTime = formatTime(closingTime);
 
@@ -35,11 +38,17 @@ const AddBranchPage = () => {
             body: JSON.stringify({ name, location, phone, openingTime: formattedOpeningTime, closingTime: formattedClosingTime }),
         });
 
+        setIsSubmitting(false);
+        
         if (response.ok) {
-            alert('Branch added successfully!');
-            router.push('/');
-        } else {
-            alert('Failed to add branch.');
+            toast.success('Branch added successfully!');
+          
+           
+            setTimeout(() => {
+              router.push('/branch');
+            }, 700);  
+        }else {
+            toast.error('Failed to add branch.');
         }
     };
 
@@ -117,8 +126,8 @@ const AddBranchPage = () => {
                     />
                 </div>
                 <div className="flex items-center justify-between">
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Add Branch
+                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" disabled={isSubmitting}>
+                        {isSubmitting ? 'Adding...' : 'Add Branch'}
                     </button>
                 </div>
             </form>

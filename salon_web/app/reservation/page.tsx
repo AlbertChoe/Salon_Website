@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import { DatePickerDemo } from "@/components/ui/date-picker";
 
 interface Branch {
@@ -34,6 +35,7 @@ const ReservationForm = () => {
     const [time, setTime] = useState<string>("");
     const [timeSlots, setTimeSlots] = useState<string[]>([]);
     const [bookedSlots, setBookedSlots] = useState<TimeSlot[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const { data: session } = useSession();
 
@@ -67,7 +69,6 @@ const ReservationForm = () => {
             setSelectedService(null);
         }
     };
-    
 
     useEffect(() => {
         async function fetchBookedSlots() {
@@ -136,14 +137,18 @@ const ReservationForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!date || !selectedBranch) {
-            alert('Please fill all the data.');
+        console.log(date,selectedBranch,time);
+        if (!date || !selectedBranch || !name || !phone || !selectedService||!time) {
+            toast.error('Please fill all the data.');
             return;
         }
         if (!session) {
-            alert('Reservations can only be made by members. Please log in first.');
+            toast.error('Reservations can only be made by members. Please log in first.');
             return;
         }
+
+        setIsSubmitting(true);
+
         const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
         const formattedDate = localDate.toISOString().split('T')[0];
 
@@ -161,16 +166,17 @@ const ReservationForm = () => {
             }),
         });
 
+        setIsSubmitting(false);
+
         if (response.ok) {
             setName("");
             setPhone("");
             setSelectedService(services[0] || null);
             setDate(null);
             setTime("");
-            
-            alert('Reservation submitted successfully!');
+            toast.success('Reservation submitted successfully!');
         } else {
-            alert('Failed to submit reservation');
+            toast.error('Failed to submit reservation');
         }
     };
 
@@ -224,13 +230,14 @@ const ReservationForm = () => {
                         <div className="mb-4">
                             <label className="block text-gray-700">Time</label>
                             <select value={time} onChange={(e) => setTime(e.target.value)} className="w-full border border-gray-300 p-2 rounded-lg" required>
+                            <option value="">Select a time</option>
                                 {date && timeSlots.map(slot => (
                                     <option key={slot} value={slot}>{slot}</option>
                                 ))}
                             </select>
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-                            Book Appointment
+                        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700" disabled={isSubmitting}>
+                            {isSubmitting ? 'Submitting...' : 'Book Appointment'}
                         </button>
                     </form>
                 )}

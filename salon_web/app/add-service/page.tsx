@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 interface Branch {
     id: string;
@@ -60,6 +61,7 @@ const AdminDashboard = () => {
             return response.data.secure_url;
         } catch (error) {
             console.error('Error uploading file:', error);
+            toast.error('Error uploading image.');
             return '';
         }
     };
@@ -69,7 +71,7 @@ const AdminDashboard = () => {
         setIsSubmitting(true);
 
         if (!selectedBranch) {
-            alert('Please select a branch.');
+            toast.error('Please select a branch.');
             setIsSubmitting(false);
             return;
         }
@@ -91,21 +93,18 @@ const AdminDashboard = () => {
         });
 
         if (response.ok) {
-            alert('Service added successfully!');
-            setServiceName('');
-            setDuration('');
-            setPrice('');
-            setImage(null);
-            setSelectedBranch(null);
+            toast.success('Service added successfully!');
+            setTimeout(() => {
+                router.push(`/branch/${selectedBranch.id}`);
+            }, 1000);  // 1 second delay before navigation
         } else {
-            alert('Failed to add service');
+            toast.error('Failed to add service.');
         }
         
         setIsSubmitting(false);
     };
 
     if (status !== 'loading' && (!session || session.user.role !== 'Admin')) {
-        router.replace('/');
         return null;
     }
 

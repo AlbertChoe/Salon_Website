@@ -1,6 +1,9 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 interface Service {
   id: string;
@@ -30,6 +33,7 @@ export default function Page({ params }: PageProps) {
   const [branch, setBranch] = useState<Branch | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBranch = async () => {
@@ -65,7 +69,7 @@ export default function Page({ params }: PageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 mb-10">
+    <div className="min-h-screen max-w-4xl mx-auto mt-10 mb-10">
       <h1 className="text-4xl font-bold text-center mb-6">{branch.name}</h1>
       <div className="mb-6 text-center">
         <p className="text-lg">{branch.location}</p>
@@ -79,7 +83,14 @@ export default function Page({ params }: PageProps) {
           branch.services.map(service => (
             <div key={service.id} className="shadow-lg p-6">
               {service.imageUrl && (
-                <div style={{ backgroundImage: `url(${service.imageUrl})`, backgroundSize: 'cover', height: '200px' }}></div>
+                <div
+                  style={{
+                    backgroundImage: `url(${service.imageUrl})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    height: '300px'
+                  }}
+                ></div>
               )}
               <h3 className="text-xl font-semibold">{service.name}</h3>
               <p className="text-yellow-500 mt-2">IDR {service.price}</p>
@@ -89,6 +100,15 @@ export default function Page({ params }: PageProps) {
         ) : (
           <p className="text-center text-lg">No services available at this branch.</p>
         )}
+      </div>
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
+          Back to Branches
+        </button>
       </div>
     </div>
   );
