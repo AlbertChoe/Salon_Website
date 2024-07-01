@@ -15,13 +15,13 @@
 
 ## Overview
 
-![salon image](image.png)
-![review page](image-5.png)
-![add branch page](image-4.png)
-![add service page](image-3.png)
-![branch page](image-2.png)
-![branch detail page](image-1.png)
-![User Dashboard](image-6.png)
+![salon image](image/image.png)
+![review page](image/image-5.png)
+![add branch page](image/image-4.png)
+![add service page](image/image-3.png)
+![branch page](image/image-2.png)
+![branch detail page](image/image-1.png)
+![User Dashboard](image/image-6.png)
 
 Here is the purpose of making this project:
 - To join Compfest Academy
