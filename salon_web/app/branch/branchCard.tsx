@@ -22,7 +22,7 @@ const BranchCard: React.FC<BranchCardProps> = ({ branch }) => {
           <p className="text-gray-600"><strong>Phone:</strong> {branch.phone}</p>
           <p className="text-gray-600"><strong>Opening Time:</strong> {branch.openingTime}</p>
           <p className="text-gray-600"><strong>Closing Time:</strong> {branch.closingTime}</p>
-        </div>
+      </div>
   
     </Link>
   );

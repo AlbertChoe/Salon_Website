@@ -9,6 +9,7 @@
     "prisma": "prisma generate"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^3.6.0",

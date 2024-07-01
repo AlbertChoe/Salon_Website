@@ -7,11 +7,17 @@ const BranchesPage = async () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">Our Branches</h1>
+      <p className="max-w-3xl mx-auto text-center mb-8 text-gray-700 text-xl">
+        Discover our conveniently located branches offering a wide range of beauty and grooming services.
+        Each branch is staffed with experienced professionals dedicated to providing you with the best service possible.
+      </p>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {branches.length > 0 ? (
           <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {branches.map(branch => (
-              <BranchCard key={branch.id} branch={branch} />
+              <BranchCard key={branch.id} branch={branch}>
+               
+              </BranchCard>
             ))}
           </div>
         ) : (
