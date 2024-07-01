@@ -99,7 +99,7 @@ npm install
 
 4. Set up your Prisma database:
 ```shell
-npm install
+npx prisma migrate dev
 ```
 5. Start the development server:
 ```shell
