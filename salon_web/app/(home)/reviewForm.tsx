@@ -29,7 +29,7 @@ const ReviewForm = () => {
 
       if (response.ok) {
         setName('');
-        setRating(1);
+        setRating(5);
         setComment('');
         toast.success('Review submitted successfully!');
       } else {
