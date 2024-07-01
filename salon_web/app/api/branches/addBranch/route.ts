@@ -22,7 +22,32 @@ export async function POST(request: Request) {
                 phone,
                 openingTime,
                 closingTime,
+                services: {
+                    create: [
+                        {
+                            name: "Haircuts and Styling",
+                            duration: 60,
+                            price: "800.000",
+                            imageUrl:"https://res.cloudinary.com/dufwj7va2/image/upload/v1719819837/plvzezxbvayfpaz7ytmr.webp"
+                        },
+                        {
+                            name: "Manicure and Pedicure",
+                            duration: 30,
+                            price: "400.000",
+                            imageUrl:"https://res.cloudinary.com/dufwj7va2/image/upload/v1719819867/twql5xvv5lcyqsuartws.webp"
+                        },
+                        {
+                            name: "Facial Treatments",
+                            duration: 45,
+                            price: "600.000",
+                            imageUrl:"https://res.cloudinary.com/dufwj7va2/image/upload/v1719819895/xtmkuuqn1skc4zfecico.webp"
+                        }
+                    ]
+                }
             },
+            include: {
+                services: true
+            }
         });
 
         return new NextResponse(JSON.stringify(newBranch), { status: 201 });
