@@ -43,6 +43,7 @@ Here is the purpose of making this project:
 - [TailwindCSS](https://tailwindcss.com/)
 - [ShadCN UI](https://tailwindcss.com/)
 - [Prisma](https://www.prisma.io/)
+- [Cloudinary](https://cloudinary.com/)
 - [NextAuth.js](https://next-auth.js.org/)
 - [Aiven](https://aiven.io/)
 
