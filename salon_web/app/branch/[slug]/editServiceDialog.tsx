@@ -23,7 +23,7 @@ const EditServiceDialog: React.FC<Service> = ({ id, name, duration, price, image
 
   const handleSave = () => {
     onSave({ id, name: serviceName, duration: serviceDuration, price: servicePrice });
-    onClose(); // Close the dialog after saving
+    onClose(); 
   };
 
   return (

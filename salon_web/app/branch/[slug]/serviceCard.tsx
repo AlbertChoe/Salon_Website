@@ -11,7 +11,7 @@ interface Service {
   imageUrl?: string;
   onEdit: () => void;
   onDelete: () => void;
-  isAdmin: boolean; // Add isAdmin prop
+  isAdmin: boolean; 
 }
 
 const ServiceCard: React.FC<Service> = ({ id, name, duration, price, imageUrl, onEdit, onDelete, isAdmin }) => {

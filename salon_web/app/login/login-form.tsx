@@ -61,7 +61,6 @@ const LogInForm = () => {
     if (!res.ok) {
       toast.error("Error", { description: "Incorrect email or password" });
 
-      // Return if there's no error paths
       setError("email", { message: "Incorrect email or password" });
       setError("password", { message: "Incorrect email or password" });
 

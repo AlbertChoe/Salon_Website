@@ -96,7 +96,7 @@ const AdminDashboard = () => {
             toast.success('Service added successfully!');
             setTimeout(() => {
                 router.push(`/branch/${selectedBranch.id}`);
-            }, 1000);  // 1 second delay before navigation
+            }, 1000); 
         } else {
             toast.error('Failed to add service.');
         }

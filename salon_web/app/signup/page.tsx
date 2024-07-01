@@ -15,7 +15,6 @@ const SignupForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Show a loading toast
     const loadingToast = toast.loading("Creating your account...");
 
     try {
@@ -25,7 +24,6 @@ const SignupForm: React.FC = () => {
         body: JSON.stringify({ fullName, email, phone, password }),
       });
 
-      // Dismiss the loading toast
       toast.dismiss(loadingToast);
 
       if (response.ok) {

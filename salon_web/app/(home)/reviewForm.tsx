@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 const ReviewForm = () => {
   const { data: session } = useSession();
   const [name, setName] = useState('');
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
