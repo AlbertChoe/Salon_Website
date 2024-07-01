@@ -45,7 +45,7 @@ function Navbar() {
           ))}
           {session ? (
             <>
-              <button onClick={() => signOut()} className="hover:text-yellow-500">
+              <button onClick={() => signOut({ callbackUrl: '/' })} className="hover:text-yellow-500">
                 Log Out
               </button>
               <div className="flex flex-col text-right border border-gray-300 p-2 rounded-md bg-blue-400">
@@ -81,7 +81,7 @@ function Navbar() {
             ))}
             {session ? (
               <>
-                <button onClick={() => signOut()} className="hover:text-yellow-500">
+                <button onClick={() => signOut({ callbackUrl: '/' })} className="hover:text-yellow-500">
                   Log Out
                 </button>
                 <div className="flex flex-col items-center border border-gray-300 p-2 rounded-md bg-blue-400">

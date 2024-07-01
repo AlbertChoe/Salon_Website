@@ -5,7 +5,7 @@ import prisma from '../../../../lib/prisma';
 
 export async function GET(req: Request, res: NextResponse) {
     try {
-        const session = await getServerSession( authOptions);
+        const session = await getServerSession(authOptions);
         if (!session || session.user.role !== 'Customer') {
             return NextResponse.redirect(new URL('/unauthorized', req.url));
         }
@@ -15,11 +15,18 @@ export async function GET(req: Request, res: NextResponse) {
                 userId: session.user.id,
             },
             select: {
+                id: true,
                 name: true,
-                phone:true,
+                phone: true,
                 service: true,
                 date: true,
                 time: true,
+                branch: {
+                    select: {
+                        name: true,
+                        location: true,
+                    },
+                },
             },
         });
 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 const ReviewForm = () => {
   const { data: session } = useSession();
@@ -13,10 +14,9 @@ const ReviewForm = () => {
     e.preventDefault();
 
     if (!session || session.user.role !== 'Customer') {
-      alert('Only customers can submit reviews.');
+      toast.error('Only customers can submit reviews.');
       return;
     }
-
 
     try {
       const response = await fetch('/api/review', {
@@ -31,14 +31,14 @@ const ReviewForm = () => {
         setName('');
         setRating(1);
         setComment('');
-        alert('Review submitted successfully!');
+        toast.success('Review submitted successfully!');
       } else {
         const errorData = await response.json();
-        alert(`Failed to submit review: ${errorData.error}`);
+        toast.error(`Failed to submit review: ${errorData.error}`);
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      alert('An error occurred while submitting your review.');
+      toast.error('An error occurred while submitting your review.');
     }
   };
 
