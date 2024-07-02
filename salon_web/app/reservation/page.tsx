@@ -24,6 +24,9 @@ interface TimeSlot {
     endTime: string;
 }
 
+
+export const dynamic = 'force-dynamic'
+
 const ReservationForm = () => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
