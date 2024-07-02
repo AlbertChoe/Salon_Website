@@ -9,7 +9,7 @@ interface Branch {
     id: string;
     name: string;
 }
-
+export const dynamic = 'force-dynamic'
 const AdminDashboard = () => {
     const { data: session, status } = useSession();
     const router = useRouter();

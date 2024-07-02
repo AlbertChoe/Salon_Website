@@ -1,6 +1,8 @@
 import prisma from '../../lib/prisma';
 import BranchCard from './branchCard';
 
+export const dynamic = 'force-dynamic'
+
 const BranchesPage = async () => {
   const branches = await prisma.branch.findMany();
   console.log(branches);

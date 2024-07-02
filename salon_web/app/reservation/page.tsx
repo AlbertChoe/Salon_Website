@@ -50,6 +50,7 @@ const ReservationForm = () => {
 
         fetchBranches();
         console.log(branches);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleBranchSelect = async (branchId: string) => {
