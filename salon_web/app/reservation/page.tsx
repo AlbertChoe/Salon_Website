@@ -49,6 +49,7 @@ const ReservationForm = () => {
         }
 
         fetchBranches();
+        console.log(branches);
     }, []);
 
     const handleBranchSelect = async (branchId: string) => {
